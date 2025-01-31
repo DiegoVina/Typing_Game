@@ -1,0 +1,20 @@
+export const words = [
+    "jump", "planet", "river", "spark", "bright", "shadow", "clock", "ocean", "valley", 
+    "glimmer", "echo", "forest", "galaxy", "dream", "light", "flame", "stone", "track", 
+    "pencil", "paper", "orbit", "glass", "signal", "cloud", "storm", "whisper", "thunder", 
+    "bridge", "silence", "space", "wander", "shield", "engine", "travel", "train", 
+    "mirror", "paradox", "grace", "focus", "motion", "pulse", "vision", "grit", "resolve", 
+    "flight", "pulse", "thread", "cipher", "query", "code", "symbol", "matrix", "flow", 
+    "energy", "thread", "robot", "compass", "fabric", "grid", "prism", "sprint", "phase", 
+    "origin", "eclipse", "fusion", "pixel", "module", "kernel", "portal", "vector", 
+    "terrain", "canyon", "summit", "divide", "signal", "sparkle", "orbit", "trail", 
+    "shadow", "ember", "glyph", "vault", "drift", "tempo", "scale", "vault", "canvas", 
+    "flint", "quartz", "signal", "sector", "marker", "ledger", "atlas", "beacon", "tempo", 
+    "quantum", "dynamo", "vortex", "toggle", "anchor", "toggle", "zenith", "arcade", 
+    "thread", "whisper", "horizon", "rocket", "prime", "pixel", "circuit", "cargo", 
+    "stream", "kernel", "spectrum", "asteroid", "flare", "chord", "echo", "nebula", 
+    "journey", "pulse", "beacon", "engine", "vector", "compass", "rift", "sphere", 
+    "chamber", "artifact", "forge", "frame", "vault", "shadow", "signal", "quill", "cove", 
+    "laser", "switch", "puzzle", "fuse", "stride", "vision", "tempo", "glide", "spirit", 
+    "flare", "curve", "groove", "stream", "flight", "motion", "strive", "phase", "eclipse"
+]
