@@ -12,8 +12,9 @@
     body{
         font-family: 'Courier New', monospace;
         background: var(--gunmetal);
-        display: grid;
-        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         margin-top: 32px;
         padding: 16px;
     }
@@ -40,12 +41,76 @@
     opacity: 0;
     }
 
-    P{
+    p{
     display: flex;
     flex-wrap: wrap;
     gap: 3px 9px;
     margin: 0;
     }
+
+    #keyboard{
+        position: static;
+        margin: 1rem auto;
+        display: flex;
+        flex-direction: row;
+        flex-basis: auto;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.2rem 0.2rem;
+    }
+
+    #keyboard .key{
+        position: relative;
+        display: inline-block;
+        width: 0.8rem;
+        height: 1.8rem;
+        padding: 0.5rem 1rem;
+        background: linear-gradient(180deg, var(--moonstone), var(--darkgreen));
+        box-shadow: inset -8px 0 8px rgba(0,0,0,0.15),
+        inset 0 -8px 8px rgba(0,0,0,0.25),
+        0.3rem 0.3rem 0.5rem rgba(0,0,0,0.4),
+        0 0 0 0.1rem rgba(0,0,0,0.75);
+        border-radius: 5px;
+        overflow: hidden;
+        }
+
+    #keyboard .key::before {
+        content: '';
+        position: absolute;
+        top: 0.2rem;
+        left: 0.2rem;
+        bottom: 0.3rem;
+        right: 0.25rem;
+        background: linear-gradient(90deg, var(--darkgreen), var(--moonstone));
+        box-shadow: -0.2rem, -0.2rem 0.2rem rgba(255,255,255,0.25),
+        0.5rem, 0.2rem 0.5rem rgba(0,0,0,0.15);
+        border-left: 1px solid var(--gunmetal);
+        border-bottom: 1px solid var(--gunmetal);
+        border-top: 1px solid var(--ashgrey);
+        border-radius: 5px;
+        }
+
+    #keyboard .key i{
+        position: relative;
+        z-index: 1;
+        color: var(--ashgrey);
+        font-size: 1.2em;
+        opacity: 0.75;
+        font-weight: 600;
+        }
+
+    .break{
+        flex-basis: 100%;
+    }
+
+    #keyboard .key.active-key{
+        background: var(--ashgrey);
+    }
+
+    #keyboard .key.active-key::before{
+        background: linear-gradient(90deg, var(--ashgrey), #ffffffeb);
+    }
+
 
     x-letter{
     color:var(--ashgrey);
@@ -211,6 +276,8 @@
         <p></p>
         <input autofocus />
     </section>
+    <section id="keyboard">   
+    </section>
     <section id="results">
         <h2>wpm</h2>
         <h3 id="results-wpm"></h3>
@@ -242,6 +309,8 @@
     const $wpm = $results.querySelector('#results-wpm')
     const $accuracy = $results.querySelector('#results-accuracy')
     const $button = document.querySelector('#reload-button')
+    const keyboardContainer = document.querySelector('#keyboard')
+    const keys = "qwertyuiopasdfghjklzxcvbnm".split('')
 
     const INITIAL_TIME = 30;
 
@@ -307,6 +376,7 @@
     function onKeyDown(event) {
         const $currentWord = $paragraph.querySelector('x-word.active')
         const $currentLetter = $currentWord.querySelector('x-letter.active')
+        const keyElement = document.querySelector(`.key i[data-key="${event.key.toLocaleLowerCase()}"]`)
 
         const { key } = event
         if (key === ' '){
@@ -363,11 +433,14 @@
                     .join('')
             }
         }
+        
+        if (keyElement) keyElement.parentElement.classList.add('active-key')
     }
     function onKeyUp() {
         //We need to recover current elements
         const $currentWord = $paragraph.querySelector('x-word.active')
         const $currentLetter = $currentWord.querySelector('x-letter.active')
+        const keyElement = document.querySelector(`.key i[data-key="${event.key.toLocaleLowerCase()}"]`)
 
         const currentWord = $currentWord.innerText.trim()
         $input.maxLength = currentWord.length
@@ -395,11 +468,14 @@
         } else {
             $currentLetter.classList.add('active', 'is-last')
         }
+
+        if (keyElement) keyElement.parentElement.classList.remove('active-key')
     }
 
     function gameOver() {
         $game.style.display = 'none'
         $results.style.display = 'flex'
+        keyboardContainer.style.display = 'none'
 
         const correctWords = $paragraph.querySelectorAll('x-word.correct').length
         const correctLetters = $paragraph.querySelectorAll('x-letter.correct').length
@@ -414,8 +490,26 @@
         const wpm = correctWords * 60 / INITIAL_TIME
         $wpm.textContent = wpm
         $accuracy.textContent = `${accuracy.toFixed(2)}%`
-        console.log($accuracy)
     }
+
+    keys.forEach((key, index) => {
+        let keyDiv = document.createElement('div')
+        keyDiv.classList.add('key')
+
+        let keyElement = document.createElement('i')
+        keyElement.setAttribute('data-key', key)
+        keyElement.innerText = key.toUpperCase()
+        keyDiv.appendChild(keyElement)
+        keyboardContainer.appendChild(keyDiv)
+
+        if (key === "p" || key === "l"){
+            let lineBreak = document.createElement("div")
+            lineBreak.classList.add('break')
+            keyboardContainer.appendChild(lineBreak)
+        }
+
+    })
+
 </script>
 <!-- I know tags like x-word or x-letter do not exist, but since HTML is gonna treat them as spans I've
 decided to use them for better legibility, following midudev's advice in the tutorial.
